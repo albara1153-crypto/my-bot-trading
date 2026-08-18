@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة التداول الشاملة</title>
+    <style>
+        body { background: #0b0e11; color: #fff; font-family: sans-serif; margin: 0; padding-bottom: 70px; }
+        .header { padding: 15px; display: flex; justify-content: space-between; align-items: center; background: #1e2329; border-bottom: 1px solid #2b313a; }
+        .balance-card { background: #1e2329; padding: 20px; margin: 10px; border-radius: 12px; }
+        .grid-icons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 10px; text-align: center; }
+        .icon-circle { background: #2b313a; width: 45px; height: 45px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 0 auto 5px; font-size: 20px; }
+        .card { background: #1e2329; margin: 10px; padding: 15px; border-radius: 12px; }
+        .section-title { color: #0ecb81; font-size: 15px; margin-bottom: 10px; font-weight: bold; }
+        .nav-bar { position: fixed; bottom: 0; width: 100%; background: #1e2329; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #2b313a; z-index: 1000; }
+        .nav-item { text-align: center; font-size: 11px; color: #848e9c; cursor: pointer; }
+        .nav-item.active { color: #f3ba2f; }
+        .search-box { width: 100%; padding: 10px; background: #12161c; border: 1px solid #2b313a; color: #fff; border-radius: 8px; box-sizing: border-box; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+    <!-- شريط الأسعار والسباكس العلوي (Ticker Tape) -->
+    <div class="tradingview-widget-container">
+      <div class="tradingview-widget-container__widget"></div>
+      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+      {
+        "symbols": [
+          {"proName": "FOREXCOM:SPXUSD", "title": "S&P 500 (سباكس)"},
+          {"proName": "FX_IDC:USDSAR", "title": "USD/SAR"},
+          {"proName": "BITSTAMP:BTCUSD", "title": "BTC/USD"},
+          {"proName": "BINANCE:INDOUSDT", "title": "INDO"}
+        ],
+        "showSymbolLogo": true,
+        "colorTheme": "dark",
+        "isTransparent": false,
+        "displayMode": "adaptive",
+        "locale": "ar"
+      }
+      </script>
+    </div>
+
+    <div class="header">
+        <div style="font-weight: bold;">منصة التداول الاحترافية</div>
+        <div>🔍</div>
+    </div>
+
+    <!-- كارد الرصيد -->
+    <div class="balance-card">
+        <div style="font-size: 13px; color: #848e9c;">القيمة الإجمالية (SAR)</div>
+        <div style="font-size: 28px; font-weight: bold; margin: 5px 0;">0,00330199 ر.س</div>
+    </div>
+
+    <!-- الأيقونات (قابل للتحكم والروابط) -->
+    <div class="grid-icons">
+        <a href="https://www.binance.com/ar/convert" target="_blank" style="text-decoration:none; color:white;">
+            <div class="icon-box"><div class="icon-circle">🔄</div>تحويل</div>
+        </a>
+        <a href="https://www.binance.com/ar/earn" target="_blank" style="text-decoration:none; color:white;">
+            <div class="icon-box"><div class="icon-circle">💰</div>Earn</div>
+        </a>
+        <a href="https://www.binance.com" target="_blank" style="text-decoration:none; color:white;">
+            <div class="icon-box"><div class="icon-circle">💎</div>Sharia Earn</div>
+        </a>
+        <a href="https://www.binance.com" target="_blank" style="text-decoration:none; color:white;">
+            <div class="icon-box"><div class="icon-circle">👤</div>الإحالة</div>
+        </a>
+    </div>
+
+    <!-- البحث المباشر عن الأصول -->
+    <div class="card">
+        <div class="section-title">🔍 البحث السريع</div>
+        <form onsubmit="searchSymbol(event)">
+            <input type="text" id="symbol-input" class="search-box" placeholder="اكتب رمز العملة أو السهم (مثل: BTCUSD, AAPL) واضغط Enter...">
+        </form>
+    </div>
+
+    <!-- الشارت المباشر -->
+    <div class="card">
+        <div class="section-title">📊 الشارت المباشر والفواصل الزمنية</div>
+        <div id="tradingview_chart" style="height: 350px;"></div>
+    </div>
+
+    <!-- مؤشر البيع والشراء -->
+    <div class="card">
+        <div class="section-title">🚦 مؤشر البيع والشراء (قرار السوق)</div>
+        <div class="tradingview-widget-container">
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>
+          {
+            "interval": "1D", "width": "100%", "isTransparent": true, "colorTheme": "dark", "showSymbolLogo": true, "locale": "ar", "symbol": "BITSTAMP:BTCUSD"
+          }
+          </script>
+        </div>
+    </div>
+
+    <!-- رادار الحيتان والسيولة -->
+    <div class="card">
+        <div class="section-title">🐋 رادار الحيتان وتدفق السيولة</div>
+        <div class="tradingview-widget-container">
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-screener.js" async>
+          {
+            "width": "100%", "height": "350", "market": "crypto", "defaultColumn": "overview", "defaultScreen": "general", "colorTheme": "dark", "locale": "ar"
+          }
+          </script>
+        </div>
+    </div>
+
+    <!-- أخبار السوق العاجلة -->
+    <div class="card">
+        <div class="section-title">📰 أخبار السوق العاجلة</div>
+        <div class="tradingview-widget-container">
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
+          {
+            "feedMode": "market", "market": "crypto", "colorTheme": "dark", "width": "100%", "height": "350", "locale": "ar"
+          }
+          </script>
+        </div>
+    </div>
+
+    <!-- الشريط السفلي التطبيقي -->
+    <div class="nav-bar">
+        <div class="nav-item active">🏠<br>الرئيسية</div>
+        <div class="nav-item">📈<br>الأسواق</div>
+        <div class="nav-item">⚡<br>تداول</div>
+        <div class="nav-item">💼<br>الأصول</div>
+    </div>
+
+    <!-- سكريبت تشغيل الشارت والبحث -->
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+    <script>
+    let tvWidget;
+    function initChart(symbolToLoad) {
+        document.getElementById('tradingview_chart').innerHTML = "";
+        tvWidget = new TradingView.widget({
+          "width": "100%",
+          "height": "350",
+          "symbol": symbolToLoad || "BITSTAMP:BTCUSD",
+          "interval": "D",
+          "timezone": "Etc/UTC",
+          "theme": "dark",
+          "style": "1",
+          "locale": "ar",
+          "enable_publishing": false,
+          "allow_symbol_change": true,
+          "container_id": "tradingview_chart"
+        });
+    }
+    initChart("BITSTAMP:BTCUSD");
+
+    function searchSymbol(event) {
+        event.preventDefault();
+        let query = document.getElementById('symbol-input').value.trim().toUpperCase();
+        if (query) {
+            let fullSymbol = query;
+            if (!query.includes(":") && !query.includes("/")) {
+                fullSymbol = "BINANCE:" + query + "USDT";
+            }
+            initChart(fullSymbol);
+        }
+    }
+    </script>
+</body>
+</html>
