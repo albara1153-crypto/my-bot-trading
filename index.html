@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة التداول الاحترافية المتكاملة</title>
+    <style>
+        :root { --bg-color: #0b0e11; --card-bg: #1e2329; --border-color: #2b313a; --accent-color: #0ecb81; --text-main: #eaecef; }
+        body { background-color: var(--bg-color); color: var(--text-main); font-family: sans-serif; margin: 0; padding: 0; }
+        header { background: var(--card-bg); padding: 15px; text-align: center; border-bottom: 1px solid var(--border-color); }
+        .container { max-width: 1200px; margin: 20px auto; padding: 0 15px; }
+        .card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+        .section-title { color: var(--accent-color); font-size: 16px; margin-bottom: 15px; font-weight: bold; }
+        .clock { text-align: center; font-size: 14px; color: var(--accent-color); margin-bottom: 10px; font-weight: bold; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
+        @media (max-width: 900px) { .grid-3 { grid-template-columns: 1fr; } }
+        .search-box { width: 100%; padding: 12px; background: #12161c; border: 1px solid var(--border-color); color: #fff; border-radius: 8px; box-sizing: border-box; }
+    </style>
+</head>
+<body>
+
+    <header><h1>منصة التداول الشاملة</h1></header>
+
+    <div class="container">
+        <!-- التاريخ والوقت -->
+        <div class="clock" id="live-clock"></div>
+        <script>
+            function updateClock() { document.getElementById('live-clock').innerText = new Date().toLocaleString('ar-SA'); }
+            setInterval(updateClock, 1000); updateClock();
+        </script>
+
+        <!-- البحث والمفضلة -->
+        <div class="grid-3">
+            <div class="card">
+                <div class="section-title">⭐ قائمة المفضلة والأسواق</div>
+                <div class="tradingview-widget-container">
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-hotlists.js" async>
+                    { "colorTheme": "dark", "dateRange": "12M", "exchange": "US", "showChart": true, "locale": "ar", "width": "100%", "height": "400" }
+                    </script>
+                </div>
+            </div>
+
+            <div>
+                <div class="card">
+                    <div class="section-title">🔍 البحث المتقدم</div>
+                    <form onsubmit="searchSymbol(event)"><input type="text" id="symbol-input" class="search-box" placeholder="اكتب الرمز (مثل: BTCUSD, AAPL) واضغط Enter..."></form>
+                </div>
+                
+                <div class="card">
+                    <div class="section-title">📊 الشارت المباشر (كافة الفواصل الزمنية)</div>
+                    <div id="tradingview_chart" style="height: 400px;"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+                    <script>
+                    function initChart(s) {
+                        new TradingView.widget({
+                            "width": "100%", "height": "400", "symbol": s || "BITSTAMP:BTCUSD",
+                            "interval": "D", "timezone": "Etc/UTC", "theme": "dark", "style": "1",
+                            "locale": "ar", "toolbar_bg": "#f1f3f6", "enable_publishing": false,
+                            "allow_symbol_change": true, "container_id": "tradingview_chart"
+                        });
+                    }
+                    initChart("BITSTAMP:BTCUSD");
+                    function searchSymbol(e) { e.preventDefault(); let q = document.getElementById('symbol-input').value.trim().toUpperCase(); initChart(q.includes(":") ? q : "BINANCE:" + q + "USDT"); }
+                    </script>
+                </div>
+            </div>
+        </div>
+
+        <!-- رادار الحيتان والأخبار -->
+        <div class="card">
+            <div class="section-title">🐋 رادار السيولة وأخبار السوق</div>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 300px;"><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-screener.js" async>{ "width": "100%", "height": "400", "market": "crypto", "colorTheme": "dark", "locale": "ar" }</script></div>
+                <div style="flex: 1; min-width: 300px;"><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>{ "feedMode": "market", "market": "crypto", "colorTheme": "dark", "width": "100%", "height": "400", "locale": "ar" }</script></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
