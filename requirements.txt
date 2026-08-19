@@ -1,0 +1,6 @@
+flask
+requests
+google-generativeai
+AQ.Ab8RN6JKbo86UXNnaU2rWZ1etSXfu6nibV21iZD_dEd5d5MrJg
+8663724548:AAEinbKIc1AfAs6BP9ZVSUqv1OW-n9G12A4
+5668101416
